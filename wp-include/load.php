@@ -13,11 +13,11 @@ define ( 'PDM_SHOWTRACE', 1 );
 define ( 'PDM_VERSION', 'v1.0.141024' );
 define ( 'PDM_ERROR', '请求错误！' );
 define ( 'PDM_NAME', '密码管理系统' );
-define ( 'PDM_COPYRIGHT', 'markdream' );
+define ( 'PDM_COPYRIGHT', 'Hello' );
 define ( 'PDM_LIMIT', 10 );
 
 // 加密字符
-define ( 'PDM_MAIN_CODE', 'markdream' );
+define ( 'PDM_MAIN_CODE', 'K4203Cc73bb51e17' );
 
 // 邮件设置
 define ( 'PDM_STMP', 1 );

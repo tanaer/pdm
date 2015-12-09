@@ -282,7 +282,8 @@ function pdm_sendmail($email, $subject = '', $body = '') {
  * @return string 密文 
  */
 function pdm_encode($str, $key = PDM_MAIN_CODE, $code = 'bin') {
-	$result = mcrypt_encrypt ( MCRYPT_RIJNDAEL_128, $key, $str, MCRYPT_MODE_CBC );
+	$iv = PDM_MAIN_CODE;
+	$result = mcrypt_encrypt ( MCRYPT_RIJNDAEL_128, $key, $str, MCRYPT_MODE_CBC, $iv);
 	switch ($code) {
 		case 'base64' :
 			$ret = base64_encode ( $result );
@@ -301,6 +302,7 @@ function pdm_encode($str, $key = PDM_MAIN_CODE, $code = 'bin') {
  * @return string 明文 
  */
 function pdm_decode($str, $key = PDM_MAIN_CODE, $code = "bin") {
+	$iv = PDM_MAIN_CODE;
 	$ret = false;
 	switch ($code) {
 		case 'base64' :
@@ -311,7 +313,7 @@ function pdm_decode($str, $key = PDM_MAIN_CODE, $code = "bin") {
 	}
 	
 	if ($str !== false) {
-		$ret = @mcrypt_decrypt ( MCRYPT_RIJNDAEL_128, $key, $str, MCRYPT_MODE_CBC );
+		$ret = @mcrypt_decrypt ( MCRYPT_RIJNDAEL_128, $key, $str, MCRYPT_MODE_CBC, $iv );
 		$ret = trim ( $ret );
 	}
 	return $ret;
