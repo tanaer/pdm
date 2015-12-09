@@ -29,7 +29,7 @@ abstract class CBaseAction extends PDMAction {
 	private function _checkTimeout() {
 		$optTime = session ( 'pdm_timeout' );
 		$session_user = session ( 'user' );
-		if (NOW_TIME > ($optTime + 60 * $session_user ['timeout'])) {
+		if (NOW_TIME > ($optTime + 60000 * $session_user ['timeout'])) {
 			$_email = base64_encode ( $session_user ['email'] );
 			session ( 'user', null );
 			redirect ( PDM_URL );
