@@ -191,8 +191,8 @@ class PasswordAction extends CBaseAction {
 			$this->error ( '密码不能为空！' );
 		}
 		
-		if ($post ['note'] == '') {
+		/*if ($post ['note'] == '') {
 			$this->error ( '备注不能为空！' );
-		}
+		}*/
 	}
 }
