@@ -22,7 +22,6 @@ SSL(可选)
 3、修改index.php文件中的"PDM_URL"改成你的PDM实际访问地址， 比如
 		http://127.0.0.1/
 		http://127.0.0.1/pdm/
-		http://demo.markdream.com/pdm/
 
 具体以你项目部署的情况而定。
 
