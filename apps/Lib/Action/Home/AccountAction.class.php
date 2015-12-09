@@ -15,7 +15,12 @@ class AccountAction extends PDMAction {
 			redirect ( pdm_ux ( 'Console/Index/index' ) );
 		}
 	}
+	public function test(){
+		ini_set('display_errors', true);
+		error_reporting(E_ALL);
 
+		dump(mcrypt_encrypt(MCRYPT_RIJNDAEL_128, 123123, 333333, MCRYPT_MODE_CBC ));
+	}
 	/**
 	 * 帐号登录
 	 */
@@ -25,9 +30,9 @@ class AccountAction extends PDMAction {
 			if ($post ['email'] == '') {
 				$this->error ( '邮件地址不能为空！' );
 			}
-			if ($post ['verification_code'] != $_SESSION ['verification_code']) {
+			/*if ($post ['verification_code'] != $_SESSION ['verification_code']) {
 				$this->error ( '你输入的验证码不正确！' );
-			}
+			}*/
 			if ($post ['password'] == '') {
 				$this->error ( '密码不能为空！' );
 			}
@@ -61,9 +66,9 @@ class AccountAction extends PDMAction {
 			if ($post ['email'] == '') {
 				$this->error ( '邮件地址不能为空！' );
 			}
-			if ($post ['verification_code'] != $_SESSION ['verification_code']) {
+			/*if ($post ['verification_code'] != $_SESSION ['verification_code']) {
 				$this->error ( '你输入的验证码不正确！' );
-			}
+			}*/
 			
 			$this->_check_email ( $post ['email'] );
 			
@@ -73,13 +78,14 @@ class AccountAction extends PDMAction {
 			
 			if ($this->user->add ( $data ) !== false) {
 				$link = PDM_URL . '?c=account&a=authentication&sign=' . pdm_code ( $post ['email'] );
-				$tpl = file_get_contents ( PDM_INC_PATH . 'ThirdParty/PHPMailer/templates/register_success.htm' );
+				/*$tpl = file_get_contents ( PDM_INC_PATH . 'ThirdParty/PHPMailer/templates/register_success.htm' );
 				$tpl = str_replace ( '#EMAIL#', $data ['email'], $tpl );
 				$tpl = str_replace ( '#SYSTEM_NAME#', PDM_NAME, $tpl );
 				$tpl = str_replace ( '#DATE#', date ( 'Y年m月d日' ), $tpl );
 				$tpl = str_replace ( '#LINK#', $link, $tpl );
 				pdm_sendmail ( $data ['email'], '密码管理系统注册确认', $tpl );
-				$this->success ( '帐号注册成功，请到你的邮件中确认激活！', '', 5 );
+				$this->success ( '帐号注册成功，请到你的邮件中确认激活！', '', 5 );*/
+				$this->success('账号注册成功，点击设置密码', $link, 5);
 			} else {
 				$this->error ( '帐号注册失败！' );
 			}
@@ -97,22 +103,21 @@ class AccountAction extends PDMAction {
 			if ($post ['password'] == '') {
 				$this->error ( '密码不能为空！' );
 			}
-			
-			if ($post ['auth_code'] == '') {
-				$this->error ( '加密KEY不能为空！' );
-			}
+			$post ['auth_code'] = mt_rand('0, 100000').pdm_rand_code(16);
+//			if ($post ['auth_code'] == '') {
+//				$this->error ( '加密KEY不能为空！' );
+//			}
 			
 			$id = pdm_code ( $post ['id'], 'DECODE' );
 			
 			if ($id == null) {
 				$this->error ( PDM_ERROR );
 			}
-			
+
 			$map ['id'] = $id;
 			$data ['password'] = pdm_encode ( $post ['password'] );
 			$data ['email_auth'] = 1;
 			$data ['auth_code'] = pdm_encode ( md5 ( $post ['auth_code'] ) );
-			
 			if ($this->user->where ( $map )->save ( $data ) !== false) {
 				// 清理多余帐号
 				$_email = $this->user->where ( $map )->getField ( 'email' );
